@@ -1,6 +1,5 @@
-import { Text, Box } from "@gluestack-ui/themed";
 import React from "react";
-import { View, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList } from "react-native";
