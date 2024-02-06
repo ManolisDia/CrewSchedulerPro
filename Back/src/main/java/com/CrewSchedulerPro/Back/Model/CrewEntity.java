@@ -1,5 +1,5 @@
 
-package com.CrewSchedulerPro.Back;
+package com.CrewSchedulerPro.Back.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,11 +10,11 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="user")
-public class UserEntity {
+public class CrewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="CrewID")
+    private Long CrewID;
 
     @Column(name="username", nullable=false, unique=true)
     private String username;
@@ -25,22 +25,22 @@ public class UserEntity {
     @Column(name="password", nullable=false)
     private String password;
 
-    public UserEntity() {
+    public CrewEntity() {
         // Default constructor
     }
 
-    public UserEntity(String username, String email, String password) {
+    public CrewEntity(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCrewID() {
+        return CrewID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCrewID(Long CrewID) {
+        this.CrewID = CrewID;
     }
 
     public String getUsername() {
@@ -65,6 +65,17 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    
+    @Override
+    public String toString() {
+        return "CrewEntity{" +
+                "CrewID=" + CrewID +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
 
