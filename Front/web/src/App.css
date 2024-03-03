@@ -1,0 +1,25 @@
+.App {
+    display: grid;
+    grid-template-rows: auto 1fr ; /* Header height and the rest */
+    height: 100vh;
+  }
+  
+  .MainContent {
+    display: grid;
+    grid-template-columns: 300px 1fr 2fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    
+  }
+  
+  .Header {
+    grid-row: 1;
+    grid-column: 1 / -1; /* Header spans the full width */
+  }
+  
+ 
+  
+
+
+

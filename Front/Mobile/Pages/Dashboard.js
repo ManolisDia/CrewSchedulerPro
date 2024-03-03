@@ -36,15 +36,10 @@ const Dashboard = ({navigation}) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
 
             <View style={styles.header}>
-                <TouchableOpacity onPress={handlePress}>
-                    <Text style={styles.buttonText}>Menu</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handlePress}>
-                    <Text style={styles.buttonText}>Profile</Text>
-                </TouchableOpacity>
+                <Text style={styles.HeaderText}>CrewScheduler Pro </Text>
             </View>
 
             <View style={styles.line}/>
@@ -121,7 +116,7 @@ const Dashboard = ({navigation}) => {
 
             <View style={styles.line}/>                
 
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -137,6 +132,11 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     
+    HeaderText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
     buttonText: {
         fontSize: 16,
         fontWeight: 'bold',
