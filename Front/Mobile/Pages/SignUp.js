@@ -6,7 +6,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   const handleSignUp = () => {
-    // Add your sign up logic here
     console.log('Signing up...');
   };
 

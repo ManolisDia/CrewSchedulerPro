@@ -1,11 +1,10 @@
 import '../../App.css'
 import React from 'react'
-import Header from '../Header'
 import ShiftAttentionCard from './cards/ShiftAttentionCard'
 import ShiftViewCard from './cards/ShiftViewCard'
 import CreationCard from './cards/CreationCard'
 import HolidayCard from './cards/HolidayCard'
-import './Home.css'
+import '../css/Home.css'
 
 function Home() {
   return (

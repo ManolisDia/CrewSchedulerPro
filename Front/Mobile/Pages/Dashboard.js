@@ -31,7 +31,7 @@ const Dashboard = ({navigation}) => {
 
     function goToShiftView() {
         console.log("Go to shiftView")
-        navigation.navigate('CalendarComponent');
+        navigation.navigate('ShiftView');
         
     }
 

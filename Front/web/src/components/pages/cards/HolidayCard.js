@@ -1,5 +1,5 @@
 import React from 'react'
-import './HolidayCard.css'
+import '../../css/HolidayCard.css'
 
 function HolidayCard() {
   return (

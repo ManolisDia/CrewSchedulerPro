@@ -8,7 +8,6 @@ const Login = ({navigation}) => {
   const handleLogin = () => {
     // Login logic goes here
     console.log('Login button pressed');
-    // For example, navigation.navigate('SomeOtherScreen');
   };
 
   return (
