@@ -11,12 +11,6 @@ function Navbar() {
     <>
         <nav className="navbar">
             <div className="navbar-container" style={Navbar.css}>
-                <Link to="/" className="navbar-logo" style={Navbar.css}>
-                    CrewScheduler Pro <i class="fab fa-typo3"></i>
-                </Link>
-                <div className="menu-icon" onClick={handleClick}>
-                    <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-                </div>
                 <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             
                     <li className="nav-item">

@@ -1,8 +1,7 @@
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+import FullCalendar from '@fullcalendar/react'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import '../../css/ShiftViewCard.css'
 
-const localizer = momentLocalizer(moment)
 
 const myEventsList = [
   {
@@ -24,13 +23,11 @@ const myEventsList = [
 const ShiftViewCard = (props) => (
   <div className='SVCard'>
     <h1>Shift View</h1>
-    <Calendar
-      localizer={localizer}
-      events={myEventsList}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 200 }}
+    <FullCalendar
+      plugins={[timeGridPlugin]}
+      initialView='timeGridWeek'
     />
+
   </div>
 )
 

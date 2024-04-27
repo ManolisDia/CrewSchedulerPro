@@ -19,7 +19,6 @@ function App() {
           <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
-            {/* <Route path='/' element={<Holiday />} /> */}
             <Route path='/notifications' element={<Notifications />} />
             <Route path='/holidays' element={<HolidayScreen />} />
             <Route path='/overtime' element={<OvertimeScreen />} />
