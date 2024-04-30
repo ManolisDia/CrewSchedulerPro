@@ -2,29 +2,54 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import { BASE_URL } from '@env'; // Ensure this is destructured correctly if it's exported as an object
+import { useNavigation } from '@react-navigation/native';
+
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [requestedNumberOfHours, setRequestedNumberOfHours] = useState('');
+  const [requestedWorkHours, setRequestedWorkHours] = useState('');
+  const [jobPosition, setJobPosition] = useState('');
+  const [role, setRole] = useState('');  // Add role as a state variable
+  const navigation = useNavigation();
+
 
   const handleSignUp = () => {
     console.log('Signing up...');
-    axios.post(`${BASE_URL}/crew-members`, {  // Correct usage of template literals
+    axios.post(`${BASE_URL}/crewmembers/crew-members`, {  
       username: username,
       password: password,
       name: name,
-      requestedNumberOfHours: parseInt(requestedNumberOfHours, 10) // Ensure this is an integer
-    })
+      requestedWorkHours: parseInt(requestedWorkHours, 10),
+      jobPosition: jobPosition,
+      role: role
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })    
     .then(response => {
       console.log('User created:', response.data);
       // Handle success (e.g., navigate to login or dashboard)
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Dashboard' }],
+      });
     })
     .catch(error => {
-      console.error('There was an error!', error);
-      // Handle errors here if any
+      console.error('Error when signing up:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Request:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
     });
+    
   };
 
   return (
@@ -39,9 +64,9 @@ const SignUp = () => {
       <TextInput
         style={styles.input}
         placeholder='Requested Number Of Hours'
-        value={requestedNumberOfHours}
+        value={requestedWorkHours}
         keyboardType='numeric' // Ensures numeric input
-        onChangeText={text => setRequestedNumberOfHours(text)}
+        onChangeText={text => setRequestedWorkHours(text)}
       />
       <TextInput
         style={styles.input}
@@ -56,7 +81,23 @@ const SignUp = () => {
         value={password}
         onChangeText={setPassword}
       />
+      <TextInput
+        style={styles.input}
+        placeholder='Job Position'
+        value={jobPosition}
+        onChangeText={setJobPosition}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Role'
+        value={role}
+        onChangeText={setRole}
+      />
       <Button title="Sign Up" onPress={handleSignUp} />
+      <Button
+        title="Go to Sign In"
+        onPress={() => navigation.navigate('Login')}
+      />
     </View>
   );
 };

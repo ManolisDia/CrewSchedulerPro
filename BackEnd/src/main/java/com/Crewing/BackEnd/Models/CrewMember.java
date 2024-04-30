@@ -13,9 +13,6 @@ public class CrewMember {
     private String name;
 
     @Column(nullable = false)
-    private String employmentStatus;
-
-    @Column(nullable = false)
     private String jobPosition;
 
     @Column(nullable = false)
@@ -34,11 +31,12 @@ public class CrewMember {
     public CrewMember() {
     }
 
-    public CrewMember(String name, String employmentStatus, String jobPosition, Integer requestedWorkHours) {
+    public CrewMember(String name, String employmentStatus, String jobPosition, Integer requestedWorkHours, String username, String password) {
         this.name = name;
-        this.employmentStatus = employmentStatus;
         this.jobPosition = jobPosition;
         this.requestedWorkHours = requestedWorkHours;
+        this.username = username;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -58,13 +56,6 @@ public class CrewMember {
         this.name = name;
     }
 
-    public String getEmploymentStatus() {
-        return employmentStatus;
-    }
-
-    public void setEmploymentStatus(String employmentStatus) {
-        this.employmentStatus = employmentStatus;
-    }
 
     public String getJobPosition() {
         return jobPosition;
@@ -112,7 +103,6 @@ public class CrewMember {
         return "CrewMember{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", employmentStatus='" + employmentStatus + '\'' +
                 ", jobPosition='" + jobPosition + '\'' +
                 ", requestedWorkHours=" + requestedWorkHours +
                 ", username='" + username + '\'' +
