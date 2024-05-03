@@ -6,7 +6,6 @@ import com.Crewing.BackEnd.Services.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,6 +16,7 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public Shift saveShift(Shift shift) {
+        System.out.println("Saving shift: " + shift);
         return shiftRepository.save(shift);
     }
 
@@ -31,7 +31,7 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public List<Shift> getShiftsByDate(LocalDate date) {
+    public List<Shift> getShiftsByDate(String date) {
         return shiftRepository.findByDate(date);
     }
 

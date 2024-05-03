@@ -16,8 +16,10 @@ public class ShiftController {
     @Autowired
     private ShiftService shiftService;
 
+
     @PostMapping
     public ResponseEntity<Shift> createShift(@RequestBody Shift shift) {
+        System.out.println("Received shift: Controller" + shift);
         Shift savedShift = shiftService.saveShift(shift);
         return new ResponseEntity<>(savedShift, HttpStatus.CREATED);
     }
