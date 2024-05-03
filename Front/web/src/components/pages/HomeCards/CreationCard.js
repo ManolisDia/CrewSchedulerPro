@@ -4,9 +4,6 @@ import Multiselect from 'multiselect-react-dropdown';
 import axios from 'axios';
 
 
-// Ensure you have this environment variable set in your .env file
-// and that it's prefixed with REACT_APP_ as required by Create React App
-// Example: REACT_APP_BASE_URL=http://localhost:8080/api
 
 function CreationCard() {
   const [address, setAddress] = useState('');
@@ -86,7 +83,7 @@ function CreationCard() {
         <div className="title">
           <h1>Shift Creation</h1>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="creation-form">
           <div className="location">
             <h2>Location</h2>
             <input type="text" id="address" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />

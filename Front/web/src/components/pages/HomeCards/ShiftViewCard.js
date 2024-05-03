@@ -1,34 +1,41 @@
-import FullCalendar from '@fullcalendar/react'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import '../../css/ShiftViewCard.css'
+import React, { useEffect, useState } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import axios from 'axios';
+import '../../css/ShiftViewCard.css';
 
+const ShiftViewCard = () => {
+  const [shifts, setShifts] = useState([]);
 
-const myEventsList = [
-  {
-    title: 'Meeting',
-    start: new Date(2022, 9, 10, 10, 0),
-    end: new Date(2022, 9, 10, 12, 0),
-  },
-  {
-    title: 'Lunch Break',
-    start: new Date(2022, 9, 10, 12, 0),
-    end: new Date(2022, 9, 10, 13, 0),
-  },
-  {
-    title: 'Team Discussion',
-    start: new Date(2022, 9, 10, 14, 0),
-    end: new Date(2022, 9, 10, 16, 0),
-  }
-]
-const ShiftViewCard = (props) => (
-  <div className='SVCard'>
-    <h1>Shift View</h1>
-    <FullCalendar
-      plugins={[timeGridPlugin]}
-      initialView='timeGridWeek'
-    />
+  useEffect(() => {
+    const fetchShifts = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/shifts');
+        const formattedShifts = response.data.map((shift) => ({
+          title: shift.bookingCompany, // Customize the title based on your shift data
+          start: new Date(shift.date + 'T' + shift.startTime),
+          end: new Date(shift.date + 'T' + shift.endTime),
+          // Add any other properties you want to include in the event object
+        }));
+        setShifts(formattedShifts);
+      } catch (error) {
+        console.error('Error fetching shifts:', error);
+      }
+    };
 
-  </div>
-)
+    fetchShifts();
+  }, []);
 
-export default ShiftViewCard
+  return (
+    <div className="SVCard">
+      <h1>Shift View</h1>
+      <FullCalendar
+        plugins={[timeGridPlugin]}
+        initialView="timeGridWeek"
+        events={shifts}
+      />
+    </div>
+  );
+};
+
+export default ShiftViewCard;
