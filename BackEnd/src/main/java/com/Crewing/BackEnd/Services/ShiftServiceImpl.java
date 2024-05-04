@@ -2,7 +2,6 @@ package com.Crewing.BackEnd.Services;
 
 import com.Crewing.BackEnd.Models.Shift;
 import com.Crewing.BackEnd.Repositories.ShiftRepository;
-import com.Crewing.BackEnd.Services.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

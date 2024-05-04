@@ -3,8 +3,8 @@ package com.Crewing.BackEnd.Models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "shift_assignments")
-public class ShiftAssignment {
+@Table(name = "holiday_requests")
+public class HolidayRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,16 +14,16 @@ public class ShiftAssignment {
     @JoinColumn(name = "crew_member_id", nullable = false)
     private CrewMember crewMember;
 
-    @ManyToOne
-    @JoinColumn(name = "shift_id", nullable = false)
-    private Shift shift;
+    @Column(nullable = false)
+    private String date;  // The date the crew member wants off
 
-    public ShiftAssignment() {
+    // Constructors, getters, and setters
+    public HolidayRequest() {
     }
 
-    public ShiftAssignment(CrewMember crewMember, Shift shift) {
+    public HolidayRequest(CrewMember crewMember, String date) {
         this.crewMember = crewMember;
-        this.shift = shift;
+        this.date = date;
     }
 
     public Long getId() {
@@ -42,20 +42,11 @@ public class ShiftAssignment {
         this.crewMember = crewMember;
     }
 
-    public Shift getShift() {
-        return shift;
+    public String getDate() {
+        return date;
     }
 
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
-
-    @Override
-    public String toString() {
-        return "ShiftAssignment{" +
-                "id=" + id +
-                ", crewMember=" + crewMember +
-                ", shift=" + shift +
-                '}';
+    public void setDate(String date) {
+        this.date = date;
     }
 }

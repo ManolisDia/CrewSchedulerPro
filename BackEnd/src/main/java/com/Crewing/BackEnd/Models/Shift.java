@@ -39,8 +39,13 @@ public class Shift {
     @JsonProperty("endTime")
     private String endTime;
 
+    @Column(nullable = true)
     @JsonProperty("notes")
     private String notes;
+
+    @Column(nullable = true)
+    private Integer overtimeHours;  
+
 
     @ManyToMany
     @JoinTable(

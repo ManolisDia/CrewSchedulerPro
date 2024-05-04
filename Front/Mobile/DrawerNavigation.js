@@ -6,6 +6,7 @@ import Dashboard from './Pages/Dashboard';
 import Profile from './Pages/Profile';
 import Notifications from './Pages/Notifications';
 import ShiftView from './Pages/ShiftView';
+import OvertimeHoliday from './Pages/OvertimeHoliday';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,6 +35,7 @@ function MyDrawer() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Notifications" component={Notifications} />
       <Drawer.Screen name="Shift View" component={ShiftView} />
+      <Drawer.Screen name="Overtime and Holiday" component={OvertimeHoliday} />
     </Drawer.Navigator>
   );
 }
