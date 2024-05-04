@@ -10,4 +10,5 @@ public interface ShiftService {
     List<Shift> getAllShifts();
     List<Shift> getShiftsByDate(String date);
     void deleteShift(Long id);
+    List<Shift> findShiftsByCrewMemberId(Long crewMemberId);
 }

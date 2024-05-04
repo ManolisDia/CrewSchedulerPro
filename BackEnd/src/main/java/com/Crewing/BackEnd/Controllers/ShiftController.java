@@ -16,7 +16,12 @@ public class ShiftController {
     @Autowired
     private ShiftService shiftService;
 
-
+    @GetMapping("/crew/{crewMemberId}")
+    public ResponseEntity<List<Shift>> getShiftsByCrewMember(@PathVariable Long crewMemberId) {
+        List<Shift> shifts = shiftService.findShiftsByCrewMemberId(crewMemberId);
+        return new ResponseEntity<>(shifts, HttpStatus.OK);
+    }
+    
     @PostMapping
     public ResponseEntity<Shift> createShift(@RequestBody Shift shift) {
         System.out.println("Received shift: Controller" + shift);

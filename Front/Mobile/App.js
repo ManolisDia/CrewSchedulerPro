@@ -19,6 +19,7 @@ function AuthStack() {
 
 function RootComponent() {
   const { isAuthenticated } = useAuth();
+  console.log('Is authenticated:', isAuthenticated);
   return isAuthenticated ? <MyDrawer /> : <AuthStack />;
 }
 

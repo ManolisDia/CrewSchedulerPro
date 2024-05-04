@@ -27,7 +27,8 @@ public class AuthController {
         CrewMember crewMember = crewMemberService.getCrewMemberByUsername(username);
 
         if (crewMember != null && crewMember.getPassword().equals(password)) {
-            return ResponseEntity.ok(new LoginResponse("Login successful"));
+            crewMember.setPassword(null); // Nullify the password to ensure it's not serialized and sent back
+            return ResponseEntity.ok(new LoginResponse("Login successful", crewMember));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }

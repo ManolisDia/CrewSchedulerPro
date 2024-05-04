@@ -31,6 +31,11 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
+    public List<Shift> findShiftsByCrewMemberId(Long crewMemberId) {
+        return shiftRepository.findByCrewMembers_Id(crewMemberId);
+    }
+
+    @Override
     public List<Shift> getShiftsByDate(String date) {
         return shiftRepository.findByDate(date);
     }
