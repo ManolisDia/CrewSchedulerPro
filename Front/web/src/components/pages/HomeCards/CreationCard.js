@@ -15,7 +15,7 @@ function CreationCard() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [notes, setNotes] = useState('');
-  const [crewMembers, setCrewMembers] = useState([]);
+  const [required_crew_members, set_required_crew_members] = useState('');  // State to handle required crew members
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,12 +23,6 @@ function CreationCard() {
       alert("Please enter a date.");
       return;
     }
-    // Log to check if the function is called
-    console.log("Attempting to create shift...");
-    console.log("Date value before formatting:", date);
-    console.log("Type of date before formatting:", typeof date); // Make sure 'date' is the variable you want to check
-
-  
 
     const shiftData = {
       address: address,
@@ -40,8 +34,9 @@ function CreationCard() {
       startTime: startTime,
       endTime: endTime,
       notes: notes,
-      crewMembers: crewMembers
+      required_crew_members: Number(required_crew_members)  // Convert to number before sending to the backend
     };
+
     console.log("Shift Data:", shiftData);
 
     try {
@@ -57,25 +52,12 @@ function CreationCard() {
       setStartTime('');
       setEndTime('');
       setNotes('');
-      setCrewMembers([]);
+      set_required_crew_members('');
     } catch (error) {
       console.error('Error creating shift:', error);
       alert('Failed to create shift: ' + (error.response ? error.response.data.message : error.message));
     }
   };
-
-  const fetchCrewMembers = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/crewmembers`);
-      setCrewMembers(response.data);
-    } catch (error) {
-      console.error('Error fetching crew members:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCrewMembers();
-  }, []);
 
   return (
     <div className="CCard">
@@ -105,15 +87,9 @@ function CreationCard() {
             <h2>Notes</h2>
             <textarea id="notes" placeholder="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
           </div>
-          <div className="selector">
-            <h2>Selector</h2>
-            <Multiselect
-              options={crewMembers}
-              displayValue="name"
-              placeholder="Select Crew"
-              onSelect={(selectedList) => setCrewMembers(selectedList)}
-              onRemove={(selectedList) => setCrewMembers(selectedList)}
-            />
+          <div className="required-crew">
+            <h2>Required Crew</h2>
+            <input type="number" id="required_crew_members" placeholder="Required Crew Members" value={required_crew_members} onChange={(e) => set_required_crew_members(e.target.value)} />
           </div>
           <div className="create">
             <button type="submit">Create</button>

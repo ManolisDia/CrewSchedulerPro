@@ -1,4 +1,42 @@
-.HCard{
-    background-color: blanchedalmond;
+.HCard {
     grid-area: 2 / 2 / 3 / 3;
-}
+    overflow: auto;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .HCard h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .HCard h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .requestList {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .requestItem {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .requestItem p {
+    margin: 5px 0;
+  }
+  
+  .requestItem p:first-child {
+    font-weight: bold;
+  }

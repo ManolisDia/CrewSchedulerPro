@@ -1,25 +1,19 @@
 .App {
-    display: grid;
-    grid-template-rows: auto 1fr ; /* Header height and the rest */
-    height: 100vh;
-  }
-  
-  .MainContent {
-    display: grid;
-    grid-template-columns: minmax(150px, 250px) 1fr 2fr;
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    
-  }
-  
-  .Header {
-    grid-row: 1;
-    grid-column: 1 / -1; /* Header spans the full width */
-  }
-  
- 
-  
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
 
+.MainContent {
+  display: grid;
+  grid-template-columns: minmax(150px, 250px) 1fr 1fr;
+  grid-template-rows: 1fr 1fr auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  padding: 20px;
+}
 
-
+.Header {
+  grid-row: 1;
+  grid-column: 1 / -1;
+}

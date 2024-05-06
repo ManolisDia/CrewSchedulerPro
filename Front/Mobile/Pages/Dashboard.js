@@ -1,94 +1,127 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import axios from 'axios';
-import { BASE_URL } from '@env'; // Ensure this is defined in your environment
-import { useAuth } from '../auth-context'; // Import the authentication context to access user info
+import { BASE_URL } from '@env';  // Ensure this is defined in your environment
+import { useAuth } from '../auth-context';  // Import the authentication context to access user info
+import ShiftDetailsModal from './ShiftDetailsModal';  // Make sure this path is correct
+import ShiftModal from './ShiftModal';
+import ShiftView from './ShiftView';    
+
 
 const Dashboard = ({ navigation }) => {
-  const [upcomingShifts, setUpcomingShifts] = useState([]);
-  const { userInfo } = useAuth(); // Assuming userInfo contains the logged in user's ID and other details
-
-  const allShifts = [
-    { id: '1', place: 'Hilton Park Lane', startFinish: '10:00 - 18:00', date: '2023-12-12', crewNo: '4' },
-    { id: '2', place: 'Marriott Marquis', startFinish: '09:00 - 17:00', date: '2023-12-13', crewNo: '5' },
-    { id: '3', place: 'Sheraton Grand', startFinish: '08:00 - 16:00', date: '2023-12-14', crewNo: '6' },
-    { id: '4', place: 'Hyatt Regency', startFinish: '11:00 - 19:00', date: '2023-12-15', crewNo: '3' },
-    { id: '5', place: 'InterContinental', startFinish: '12:00 - 20:00', date: '2023-12-16', crewNo: '7' },
-    { id: '6', place: 'Ritz-Carlton', startFinish: '13:00 - 21:00', date: '2023-12-17', crewNo: '4' },
-];
-
-function handlePress() {
-    console.log("Pressed");
-  }
+    const [upcomingShifts, setUpcomingShifts] = useState([]);
+    const [incompleteShifts, setIncompleteShifts] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedShift, setSelectedShift] = useState(null);
+    const { userInfo } = useAuth();  // Assuming userInfo contains the logged in user's ID and other details
+    const [upcomingModalVisible, setUpcomingModalVisible] = useState(false);
 
 
-  useEffect(() => {
-    const fetchShifts = async () => {
-      try {
-        const { data } = await axios.get(`${BASE_URL}/shifts/crew/${userInfo.id}`);
-        // Format the data to be suitable for the UI
-        const formattedData = data.map(shift => ({
-          id: shift.id.toString(), // Ensure id is a string for keyExtractor
-          place: shift.address,
-          startFinish: `${shift.startTime} - ${shift.endTime}`,
-          date: shift.date,
-          crewNo: shift.crewMembers.length.toString() // Assuming crewMembers is an array
-        })).slice(0, 3); // Take only the first three shifts
-        setUpcomingShifts(formattedData);
-      } catch (error) {
-        console.error('Failed to fetch shifts:', error);
-      }
+    useEffect(() => {
+        const fetchShifts = async () => {
+            try {
+                const upcomingData = await axios.get(`${BASE_URL}/shifts/crew/${userInfo.id}`);
+                const incompleteData = await axios.get(`${BASE_URL}/shifts/incomplete`);
+
+                
+                console.log('upcomingData.data:', upcomingData.data);
+
+                const formattedUpcomingShifts = upcomingData.data.map(shift => ({
+                    id: shift.id.toString(),
+                    address: shift.address,
+                    postcode: shift.postcode,
+                    bookingCompany: shift.bookingCompany,
+                    siteContact: shift.siteContact,
+                    siteContactNumber: shift.siteContactNumber,
+                    date: shift.date,
+                    startTime: shift.startTime,
+                    endTime: shift.endTime,
+                    notes: shift.notes,
+                    overtimeHours: shift.overtimeHours,
+                    required_crew_members: shift.required_crew_members,
+                    crewMembers: shift.crewMembers
+                  })).slice(0, 3);
+
+                console.log('formattedUpcomingShifts:', formattedUpcomingShifts);
+
+                const formattedIncompleteShifts = incompleteData.data
+                .filter(shift => 
+                  // Check if the current user's id is not in the crewMembers array
+                  !shift.crewMembers.some(crewMember => crewMember.id === userInfo.id)
+                )
+                .map(shift => ({
+                  id: shift.id.toString(),
+                  place: shift.address,
+                  startFinish: `${shift.startTime} - ${shift.endTime}`,
+                  date: shift.date,
+                  requiredCrewNo: shift.required_crew_members.toString()
+                }));
+              
+                setUpcomingShifts(formattedUpcomingShifts);
+                setIncompleteShifts(formattedIncompleteShifts);
+            } catch (error) {
+                console.error('Failed to fetch shifts:', error);
+            }
+        };
+
+        fetchShifts();
+    }, [userInfo.id]);
+
+    const handleAcceptShift = async () => {
+        if (!selectedShift) return;
+        try {
+          console.log('Crew member ID:', userInfo.id, 'Shift ID:', selectedShift.id);
+            await axios.post(`${BASE_URL}/shifts/addCrew/${selectedShift.id}/${userInfo.id}`);
+            setModalVisible(false);
+            // Optionally refresh the list or update state to reflect the change
+            const updatedShifts = incompleteShifts.filter(shift => shift.id !== selectedShift.id);
+            setIncompleteShifts(updatedShifts);
+        } catch (error) {
+            console.error('Error accepting shift:', error);
+        }
     };
 
-    fetchShifts();
-  }, [userInfo.id]); // Depend on userInfo.id to refetch when it changes
-
-  function goToShiftView() {
-    console.log("Go to shiftView");
-    navigation.navigate('ShiftView');
-  }
-
-  return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <Text style={styles.HeaderText}>CrewScheduler Pro</Text>
-      </View>
-
-      <View style={styles.line}/>
-
-      <View style={styles.upcomingContainer}>
-        <View style={styles.upcomingTitle}>
-          <Text style={styles.buttonText}>Upcoming Shifts</Text>
-        </View>
-      </View>
-
-      <View style={styles.line}/>
-
-      <View style={styles.containerUS}>
-        <FlatList
-          data={upcomingShifts}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.upcomingFLView}>
-              <TouchableOpacity onPress={goToShiftView}><Text style={[styles.topLeft, styles.cornerItem]}>{item.place}</Text></TouchableOpacity>
-              <TouchableOpacity onPress={goToShiftView}><Text style={[styles.topRight, styles.cornerItem]}>{item.startFinish}</Text></TouchableOpacity>
-              <TouchableOpacity onPress={goToShiftView}><Text style={[styles.bottomLeft, styles.cornerItem]}>{item.date}</Text></TouchableOpacity>
-              <TouchableOpacity onPress={goToShiftView}><Text style={[styles.bottomRight, styles.cornerItem]}>No. of Crew: {item.crewNo}</Text></TouchableOpacity>
+    return (
+        <View style={{ flex: 1 }}>
+            <View style={styles.header}>
+                <Text style={styles.HeaderText}>CrewScheduler Pro</Text>
             </View>
-          )}
-        />
-      </View>
+
+            <View style={styles.line}/>
+
+            
+            <View style={styles.upcomingContainer}>
+                <View style={styles.upcomingTitle}>
+                    <Text style={styles.buttonText}>Upcoming Shifts</Text>
+                </View>
+                <FlatList
+                    data={upcomingShifts}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {
+                            setSelectedShift(item);
+                            setUpcomingModalVisible(true);
+                        }}>
+                            <View style={styles.upcomingFLView}>
+                                <Text style={[styles.cornerItem]}>{item.place}</Text>
+                                <Text style={[styles.cornerItem]}>{item.startFinish}</Text>
+                                <Text style={[styles.cornerItem]}>{item.date}</Text>
+                                <Text style={[styles.cornerItem]}>No. of Crew: {item.crewNo}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
 
             <View style={styles.line}/>
 
             <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                    <TouchableOpacity onPress={goToShiftView}>
+                <TouchableOpacity onPress={() => navigation.navigate('Shift View')}>
+                    <View style={styles.button}>
                         <Text style={styles.buttonText}>View Shift Calendar</Text>
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
             </View>
-                
 
             <View style={styles.line}/>
 
@@ -96,21 +129,22 @@ function handlePress() {
                 <View style={styles.offersTitle}>
                     <Text style={styles.buttonText}>Shift Offers</Text>
                 </View>
-            </View>
-
-            <View style={styles.line}/>
-
-            <View style={styles.containerOF}>
                 <FlatList
                     horizontal
-                    data={allShifts}
+                    data={incompleteShifts}
+                    keyExtractor={item => item.id}
                     renderItem={({ item }) => (
-                        <View style={styles.offersFLView}>
-                            <Text>{item.place}</Text>
-                            <Text>{item.startFinish}</Text>
-                            <Text>{item.date}</Text>
-                            <Text>No. of Crew: {item.crewNo}</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => {
+                            setSelectedShift(item);
+                            setModalVisible(true);
+                        }}>
+                            <View style={styles.offersFLView}>
+                                <Text>{item.place}</Text>
+                                <Text>{item.startFinish}</Text>
+                                <Text>{item.date}</Text>
+                                <Text>No. of Crew: {item.requiredCrewNo}</Text>
+                            </View>
+                        </TouchableOpacity>
                     )}
                     showsHorizontalScrollIndicator={false}
                 />
@@ -118,16 +152,18 @@ function handlePress() {
 
             <View style={styles.line}/>
 
-            <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                    <TouchableOpacity onPress={handlePress}>
-                        <Text style={styles.buttonText}>View All Offers</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <ShiftDetailsModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                shift={selectedShift}
+                onAccept={handleAcceptShift}
+            />
 
-            <View style={styles.line}/>                
-
+            <ShiftModal
+                shift={selectedShift}
+                visible={upcomingModalVisible}
+                closeModal={() => setUpcomingModalVisible(false)}
+            />
         </View>
     );
 };

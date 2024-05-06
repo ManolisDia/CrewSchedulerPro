@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 @Entity
 @Table(name = "shifts")
 public class Shift {
@@ -46,6 +45,9 @@ public class Shift {
     @Column(nullable = true)
     private Integer overtimeHours;  
 
+    @Column(nullable = false)
+    @JsonProperty("required_crew_members")
+    private Integer requiredCrewMembers;  // Add this new column
 
     @ManyToMany
     @JoinTable(
@@ -59,9 +61,9 @@ public class Shift {
     public Shift() {
     }
 
-    public Shift(String address, String postcode, String bookingCompany, String siteContact,
-                 String siteContactNumber, String date, String startTime, String endTime,
-                 String notes, List<CrewMember> crewMembers) {
+    public Shift(String address, String postcode, Integer requiredCrewMembers, String bookingCompany, 
+                String siteContact, String siteContactNumber, String date, String startTime, 
+                String endTime, String notes, List<CrewMember> crewMembers, Integer overtimeHours) {
         this.address = address;
         this.postcode = postcode;
         this.bookingCompany = bookingCompany;
@@ -71,7 +73,9 @@ public class Shift {
         this.startTime = startTime;
         this.endTime = endTime;
         this.notes = notes;
+        this.requiredCrewMembers = requiredCrewMembers;
         this.crewMembers = crewMembers;
+        this.overtimeHours = overtimeHours;
     }
 
     public Long getId() {
@@ -129,6 +133,58 @@ public class Shift {
     public void setCrewMembers(List<CrewMember> crewMembers) {
         this.crewMembers = crewMembers;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Integer getOvertimeHours() {
+        return overtimeHours;
+    }
+
+    public void setOvertimeHours(Integer overtimeHours) {
+        this.overtimeHours = overtimeHours;
+    }
+
+    public Integer getRequiredCrewMembers() {
+        return requiredCrewMembers;
+    }
+
+    public void setRequiredCrewMembers(Integer requiredCrewMembers) {
+        this.requiredCrewMembers = requiredCrewMembers;
+    }
+
+    
+
+
     @Override
     public String toString() {
         return "Shift{" +
@@ -142,6 +198,8 @@ public class Shift {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", notes='" + notes + '\'' +
+                ", overtimeHours=" + overtimeHours +
+                ", requiredCrewMembers=" + requiredCrewMembers +
                 ", crewMembers=" + crewMembers +
                 '}';
     }

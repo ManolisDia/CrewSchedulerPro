@@ -1,4 +1,40 @@
-.SACard{
-    background-color: gray;
+.SACard {
     grid-area: 1 / 2 / 2 / 3;
-}
+    overflow: auto;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .shiftList {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .shiftItems {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .shiftItem {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .shiftDetails {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .shiftDetails p {
+    margin: 5px 0;
+  }
+  
+  .shiftDetails p:first-child {
+    font-weight: bold;
+  }

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import moment from 'moment'; // Import standard moment library
+import moment from 'moment';
 import axios from 'axios';
 import { BASE_URL } from '@env';
-import { useAuth } from '../auth-context'; // Ensure correct path
+import { useAuth } from '../auth-context';
+import ShiftModal from './ShiftModal'; // Import the ShiftModal component
 
 const CustomCalendar = () => {
   const [shifts, setShifts] = useState([]);
   const [currentWeek, setCurrentWeek] = useState(moment());
+  const [selectedShift, setSelectedShift] = useState(null);
   const { userInfo } = useAuth();
 
   useEffect(() => {
@@ -36,7 +38,6 @@ const CustomCalendar = () => {
   
     fetchShifts();
   }, [userInfo, currentWeek]);
-    
 
   const renderWeek = () => {
     const startOfWeek = currentWeek.clone().startOf('week');
@@ -58,18 +59,25 @@ const CustomCalendar = () => {
   };
 
   const renderShifts = (day) => {
-    // Filter shifts for the current day
     const dayShifts = shifts.filter(shift => moment(shift.start).isSame(day, 'day'));
   
     return dayShifts.map((shift, index) => (
-      <View key={index} style={styles.shift}>
-        <Text style={styles.shiftDetails}>Location: {shift.address}</Text>
-        <Text style={styles.shiftDetails}>Start Time: {moment(shift.start).format('HH:mm')}</Text>
-        <Text style={styles.shiftDetails}>End Time: {moment(shift.end).format('HH:mm')}</Text>
-      </View>
+      <TouchableOpacity
+        key={index}
+        onPress={() => {
+          console.log('Shift pressed:', shift); // Add this line for debugging
+          setSelectedShift(shift);
+        }}
+        style={styles.shiftContainer} // Add a style for the TouchableOpacity
+      >
+        <View style={styles.shift}>
+          <Text style={styles.shiftDetails}>Location: {shift.address}</Text>
+          <Text style={styles.shiftDetails}>Start Time: {moment(shift.start).format('HH:mm')}</Text>
+          <Text style={styles.shiftDetails}>End Time: {moment(shift.end).format('HH:mm')}</Text>
+        </View>
+      </TouchableOpacity>
     ));
   };
-  
 
   const handlePrevWeek = () => {
     setCurrentWeek(currentWeek.clone().subtract(1, 'week'));
@@ -77,6 +85,10 @@ const CustomCalendar = () => {
 
   const handleNextWeek = () => {
     setCurrentWeek(currentWeek.clone().add(1, 'week'));
+  };
+
+  const closeModal = () => {
+    setSelectedShift(null);
   };
 
   return (
@@ -91,6 +103,7 @@ const CustomCalendar = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.calendar}>{renderWeek()}</View>
+      <ShiftModal shift={selectedShift} closeModal={closeModal} /> {/* Render the ShiftModal component */}
     </View>
   );
 };

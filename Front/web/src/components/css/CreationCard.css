@@ -1,68 +1,95 @@
 .CCard {
-    grid-area: 3 / 2 / 4 / 4;
-  }
-  
-  .CCard-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;  /* Auto for the title, and 1fr for the form */
-    grid-gap: 20px;
-    background-color: grey; /* Background for the entire container */
-    color: black;
-  }
-  
-  .CCard .title {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    background-color: grey;
-    color: black;
-  }
-  
-  /* The form itself is the second "row" of the .CCard-container grid */
-  .CCard .creation-form {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr 1fr;  /* Adjusted to two rows only */
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    background-color: lightgray;
-    grid-column: 1 / 2; /* Full width */
-    grid-row: 2 / 3; /* Positioned in the second row of the .CCard-container */
-  }
-  
-  .CCard .location {
-    grid-area: 1 / 1 / 2 / 2;
-    background-color: lightgray;
-    color: black;
-  }
-  
-  .CCard .booking {
-    grid-area: 2 / 1 / 3 / 2;
-    background-color: lightgray;
-    color: black;
-  }
-  
-  .CCard .time {
-    grid-area: 1 / 2 / 3 / 3;  /* Spans both rows in the second column */
-    background-color: lightgray;
-    color: black;
-  }
-  
-  .CCard .notes {
-    grid-area: 1 / 3 / 3 / 4;  /* Spans both rows in the third column */
-    background-color: lightgray;
-    color: black;
-  }
-  
-  .CCard .selector {
-    grid-area: 1 / 4 / 2 / 5;
-    background-color: lightgray;
-    color: black;
-  }
-  
-  .CCard .create {
-    grid-area: 2 / 4 / 3 / 5;
-    background-color: lightgray;
-    color: black;
-  }
-  
+  grid-area: 3 / 2 / 4 / 4;
+  overflow: auto;
+}
+
+.CCard-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  grid-gap: 20px;
+  background-color: #f4f4f4;
+  color: black;
+  border-radius: 10px; /* Add border-radius for curved edges */
+  border: 2px solid #ccc; /* Add border */
+}
+
+.CCard .title {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  background-color: darkgray;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 10px; /* Add border-radius to top-left corner */
+  border-top-right-radius: 10px; /* Add border-radius to top-right corner */
+}
+
+.CCard .creation-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  padding: 20px;
+}
+
+.CCard .location,
+.CCard .booking,
+.CCard .time,
+.CCard .notes,
+.CCard .required-crew,
+.CCard .create {
+  background-color: #fff;
+  color: #333;
+  padding: 15px;
+  border-radius: 5px; /* Add border-radius to form sections */
+}
+
+.CCard .location {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.CCard .booking {
+  grid-area: 2 / 1 / 3 / 3;
+}
+
+.CCard .time {
+  grid-area: 1 / 3 / 3 / 4;
+}
+
+.CCard .notes {
+  grid-area: 1 / 4 / 3 / 5;
+}
+
+.CCard .required-crew {
+  grid-area: 3 / 1 / 4 / 3;
+}
+
+.CCard .create {
+  grid-area: 3 / 3 / 4 / 5;
+  text-align: center;
+}
+
+.CCard input,
+.CCard textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.CCard .create button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.CCard .create button:hover {
+  background-color: #45a049;
+}
