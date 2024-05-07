@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Platform, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select'; // Import the custom picker
+import CustomPicker from './CustomPicker'; // Adjust the path as necessary
+
 import axios from 'axios';
 import { BASE_URL } from '@env';
 import { useAuth } from '../auth-context'; // Import the authentication context to access user info
@@ -15,6 +17,8 @@ const OvertimeHoliday = () => {
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
   const { userInfo } = useAuth(); // Assuming userInfo contains the logged in user's ID and other details
+  const [selectedShiftLabel, setSelectedShiftLabel] = useState('');
+
 
   useEffect(() => {
     // Use userInfo.id directly in the API call
@@ -44,12 +48,6 @@ const OvertimeHoliday = () => {
 
   const handleOvertimeSubmit = () => {
     if (userInfo && userInfo.id) {
-        console.log("Posting this data:", {
-            shiftId: selectedShift,
-            crewMemberId: userInfo.id,
-            overtimeHours: parseInt(overtimeHours, 10)
-          });
-          
       axios.post(`${BASE_URL}/overtime`, {
         shiftId: selectedShift,
         crewMemberId: userInfo.id,
@@ -70,10 +68,18 @@ const OvertimeHoliday = () => {
             value={holidayStart}
             mode="date"
             display="default"
-            onChange={(event, date) => { setShowStartPicker(Platform.OS === 'ios'); setHolidayStart(date || holidayStart); }}
+            onChange={(event, date) => { 
+              setShowStartPicker(Platform.OS === 'ios'); 
+              setHolidayStart(date || holidayStart); 
+            }}
           />
         )}
+        {/* Display the selected start date */}
+        <Text style={styles.dateText}>
+          Start Date: {holidayStart.toLocaleDateString()}
+        </Text>
       </View>
+
       <View>
         <Button onPress={() => setShowEndPicker(true)} title="Choose End Date" />
         {showEndPicker && (
@@ -81,21 +87,35 @@ const OvertimeHoliday = () => {
             value={holidayEnd}
             mode="date"
             display="default"
-            onChange={(event, date) => { setShowEndPicker(Platform.OS === 'ios'); setHolidayEnd(date || holidayEnd); }}
+            onChange={(event, date) => { 
+              setShowEndPicker(Platform.OS === 'ios'); 
+              setHolidayEnd(date || holidayEnd); 
+            }}
           />
         )}
+        {/* Display the selected end date */}
+        <Text style={styles.dateText}>
+          End Date: {holidayEnd.toLocaleDateString()}
+        </Text>
       </View>
+
       <Button title="Submit Holiday Request" onPress={handleHolidaySubmit} />
 
+
       <Text style={styles.header}>Overtime Request</Text>
-      <Picker
-        selectedValue={selectedShift}
-        onValueChange={(itemValue, itemIndex) => setSelectedShift(itemValue)}
-        style={styles.picker}>
-        {shifts.map(shift => (
-          <Picker.Item key={shift.id} label={`Shift on ${shift.date}`} value={shift.id} />
-        ))}
-      </Picker>
+      
+      <CustomPicker
+        items={shifts}
+        onSelect={(item) => {
+          setSelectedShift(item.id);
+          setSelectedShiftLabel(`${item.date} at ${item.address}`); // Update this line as per your shift object properties
+        }}
+      />
+
+      <View style={{ padding: 10, marginTop: 10 }}>
+        <Text style={styles.selectedShiftText}>{selectedShiftLabel}</Text>
+      </View>
+
       <TextInput
         style={styles.input}
         placeholder="Overtime Hours"
@@ -118,10 +138,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 20,
   },
-  picker: {
-    height: 50,
-    width: '100%',
-  },
   input: {
     height: 40,
     borderWidth: 1,
@@ -129,5 +145,31 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   }
 });
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'black', // Changed to black
+    borderRadius: 4,
+    color: 'black', // Already set to black
+    paddingRight: 30, // to ensure the dropdown icon is visible
+    backgroundColor: 'white' // Added for better contrast with black border
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'black', // Changed to black
+    borderRadius: 8,
+    color: 'black', // Already set to black
+    paddingRight: 30, // to ensure the dropdown icon is visible
+    backgroundColor: 'white' // Added for better contrast with black border
+  },
+});
+
 
 export default OvertimeHoliday;

@@ -5,6 +5,10 @@ import { AuthProvider, useAuth } from './auth-context';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import MyDrawer from './DrawerNavigation';
+import { TextEncoder, TextDecoder } from 'text-encoding';
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 
 const Stack = createStackNavigator();
 

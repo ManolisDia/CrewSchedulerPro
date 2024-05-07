@@ -78,6 +78,7 @@ const CustomCalendar = () => {
       </TouchableOpacity>
     ));
   };
+  
 
   const handlePrevWeek = () => {
     setCurrentWeek(currentWeek.clone().subtract(1, 'week'));
@@ -91,6 +92,8 @@ const CustomCalendar = () => {
     setSelectedShift(null);
   };
 
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -103,7 +106,7 @@ const CustomCalendar = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.calendar}>{renderWeek()}</View>
-      <ShiftModal shift={selectedShift} closeModal={closeModal} /> {/* Render the ShiftModal component */}
+      <ShiftModal shift={selectedShift} closeModal={closeModal} /> 
     </View>
   );
 };
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     borderColor: '#dddddd', // Light grey border for separation
   },
   dayLabel: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#333333', // Dark grey for text
     marginRight: 10, // Add margin to separate date from shifts
@@ -155,6 +158,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
     marginLeft: 5, // Space between multiple shifts
+    minWidth: 200, // Minimum width for each shift box
+    maxWidth: 400, 
+    margin: 5, // Give some space around each shift box
   },
   shiftDetails: {
     fontSize: 16,

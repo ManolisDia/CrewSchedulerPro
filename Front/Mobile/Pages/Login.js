@@ -14,6 +14,7 @@ const Login = () => {
   const handleLogin = async () => {
     console.log('Login button pressed');
     try {
+      console.log('Base URL:', BASE_URL);
         const response = await axios.post(`${BASE_URL}/auth/login`, {
             username,
             password,

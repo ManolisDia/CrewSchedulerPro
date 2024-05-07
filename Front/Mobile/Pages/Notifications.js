@@ -1,21 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-
-const notifications = [
-  {
-    id: '1',
-    title: 'New Message',
-    description: 'You have received a new message from Alice.',
-    time: '10 mins ago',
-  },
-  {
-    id: '2',
-    title: 'Update Available',
-    description: 'A new version of the app is available for download.',
-    time: '1 hour ago',
-  },
-  // ... more notifications
-];
+import useWebSocket from '../Hooks/useWebSocket';
 
 const NotificationItem = ({ item }) => (
   <View style={styles.notificationItem}>
@@ -26,10 +11,23 @@ const NotificationItem = ({ item }) => (
 );
 
 const Notifications = () => {
+  const [notifications, setNotifications] = useState([]);
+  const { messages } = useWebSocket('http://192.168.0.25:8080/ws');
+
+  useEffect(() => {
+    const newNotifications = messages.map((message, index) => ({
+      id: index.toString(),
+      title: 'New Shift',
+      description: message,
+      time: new Date().toLocaleString(),
+    }));
+    setNotifications((prevNotifications) => [...prevNotifications, ...newNotifications]);
+  }, [messages]);
+
   return (
     <FlatList
       data={notifications}
-      keyExtractor={item => item.id}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => <NotificationItem item={item} />}
       style={styles.container}
     />

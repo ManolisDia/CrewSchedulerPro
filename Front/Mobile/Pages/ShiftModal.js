@@ -6,31 +6,29 @@ const ShiftModal = ({ shift, visible, closeModal }) => {
     return null;
   }
 
-  console.log('ShiftModal shift prop:', shift);
-
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Shift Details</Text>
-          <Text>Address: {shift.address}</Text>
-          <Text>Postcode: {shift.postcode}</Text>
-          <Text>Booking Company: {shift.bookingCompany}</Text>
-          <Text>Site Contact: {shift.siteContact}</Text>
-          <Text>Site Contact Number: {shift.siteContactNumber}</Text>
-          <Text>Date: {shift.date}</Text>
-          <Text>Start Time: {shift.startTime}</Text>
-          <Text>End Time: {shift.endTime}</Text>
-          <Text>Notes: {shift.notes}</Text>
-          <Text>Overtime Hours: {shift.overtimeHours}</Text>
-          <Text>Required Crew Members: {shift.required_crew_members}</Text>
+          <Text>Address: {shift.address || 'No address provided'}</Text>
+          <Text>Postcode: {shift.postcode || 'No postcode'}</Text>
+          <Text>Booking Company: {shift.bookingCompany || 'No booking company'}</Text>
+          <Text>Site Contact: {shift.siteContact || 'No site contact'}</Text>
+          <Text>Site Contact Number: {shift.siteContactNumber || 'No contact number'}</Text>
+          <Text>Date: {shift.date || 'No date'}</Text>
+          <Text>Start Time: {shift.startTime || 'No start time'}</Text>
+          <Text>End Time: {shift.endTime || 'No end time'}</Text>
+          <Text>Notes: {shift.notes || 'No notes'}</Text>
+          <Text>Overtime Hours: {shift.overtimeHours || 'No overtime hours'}</Text>
+          <Text>Required Crew Members: {shift.required_crew_members || 'No required crew members'}</Text>
           
           {/* Display the list of crew members */}
           <Text style={styles.crewMembersTitle}>Crew Members:</Text>
           {shift.crewMembers && shift.crewMembers.length > 0 ? (
             shift.crewMembers.map((crewMember, index) => (
               <Text key={index} style={styles.crewMemberName}>
-                {crewMember.name}
+                {crewMember.name || 'Unnamed crew member'}
               </Text>
             ))
           ) : (
@@ -64,6 +62,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  crewMembersTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  crewMemberName: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
   closeButton: {
     backgroundColor: 'blue',
     padding: 10,
@@ -74,16 +82,6 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     fontWeight: 'bold',
-  },
-  crewMembersTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  crewMemberName: {
-    fontSize: 14,
-    marginBottom: 4,
   },
 });
 
