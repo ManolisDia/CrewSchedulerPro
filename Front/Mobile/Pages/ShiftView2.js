@@ -14,7 +14,7 @@ const ShiftView = () => {
     const fetchShifts = async () => {
       if (!userInfo) {
         console.error('User info not available');
-        return; // Exit the function if userInfo is not available
+        return; 
       }
       console.log('Fetching shifts for user:', userInfo);
       try {

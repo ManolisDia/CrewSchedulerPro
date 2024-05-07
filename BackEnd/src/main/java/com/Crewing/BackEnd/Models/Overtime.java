@@ -19,9 +19,9 @@ public class Overtime {
     private CrewMember crewMember;
 
     @Column(nullable = true)
-    private Integer overtimeHours; // The amount of overtime hours requested
+    private Integer overtimeHours; 
 
-    // Constructors, getters, and setters
+    
     public Overtime() {
     }
 

@@ -24,7 +24,6 @@ const Profile = () => {
         <Text>Stuff about what a crewman can do or something</Text>
       </View>
 
-      {/* Add more sections as needed */}
     </ScrollView>
   );
 };

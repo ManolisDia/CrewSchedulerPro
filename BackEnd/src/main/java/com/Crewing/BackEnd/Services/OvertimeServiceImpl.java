@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -65,5 +66,18 @@ public class OvertimeServiceImpl implements OvertimeService {
     @Override
     public List<Overtime> getOvertimesByCrewMemberId(Long crewMemberId) {
         return overtimeRepository.findByCrewMember_Id(crewMemberId);
+    }
+
+    @Override
+    public boolean deleteOvertimeByCrewMemberAndShift(Long crewMemberId, Long shiftId) {
+        Optional<Overtime> overtime = overtimeRepository.findByCrewMember_IdAndShift_Id(crewMemberId, shiftId);
+        if (overtime.isPresent()) {
+            overtimeRepository.delete(overtime.get());
+            logger.info("Deleted overtime for crew member ID {} on shift ID {}", crewMemberId, shiftId);
+            return true;
+        } else {
+            logger.warn("Overtime not found for crew member ID {} on shift ID {}", crewMemberId, shiftId);
+            return false;
+        }
     }
 }

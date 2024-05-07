@@ -67,4 +67,22 @@ public class OvertimeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/crew/{crewMemberId}/shift/{shiftId}")
+    public ResponseEntity<?> deleteOvertimeByCrewMemberAndShift(@PathVariable Long crewMemberId, @PathVariable Long shiftId) {
+        logger.debug("Attempting to delete overtime for crew member ID {} on shift ID {}", crewMemberId, shiftId);
+        try {
+            boolean isDeleted = overtimeService.deleteOvertimeByCrewMemberAndShift(crewMemberId, shiftId);
+            if (isDeleted) {
+                logger.info("Successfully deleted overtime request for crew member ID {} on shift ID {}", crewMemberId, shiftId);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                logger.info("No overtime request found or already deleted for crew member ID {} on shift ID {}", crewMemberId, shiftId);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to delete overtime request due to: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -1,58 +1,68 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import axios from 'axios';
-import { BASE_URL } from '@env'; // Ensure this is destructured correctly if it's exported as an object
+import { BASE_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 
-
 const SignUp = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [requestedWorkHours, setRequestedWorkHours] = useState('');
-  const [jobPosition, setJobPosition] = useState('');
-  const [role, setRole] = useState('');  // Add role as a state variable
-  const navigation = useNavigation();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [requestedWorkHours, setRequestedWorkHours] = useState('');
+    const [jobPosition, setJobPosition] = useState('');
+    const [role, setRole] = useState('');
+    const navigation = useNavigation();
 
+    const handleSignUp = () => {
+        console.log('Signing up...');
+        axios.post(`${BASE_URL}/crewmembers/crew-members`, {
+            username: username,
+            password: password,
+            name: name,
+            requestedWorkHours: parseInt(requestedWorkHours, 10),
+            jobPosition: jobPosition,
+            role: role
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log('User created:', response.data);
+            // Show success alert
+            Alert.alert(
+                'Sign Up Successful',
+                'You have successfully signed up.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                           
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'Dashboard' }],
+                            });
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+        })
+        .catch(error => {
+            console.error('Error when signing up:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+            } else if (error.request) {
+                console.error('Request:', error.request);
+            } else {
+                console.error('Error message:', error.message);
+            }
+        });
+    };
 
-  const handleSignUp = () => {
-    console.log('Signing up...');
-    axios.post(`${BASE_URL}/crewmembers/crew-members`, {  
-      username: username,
-      password: password,
-      name: name,
-      requestedWorkHours: parseInt(requestedWorkHours, 10),
-      jobPosition: jobPosition,
-      role: role
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })    
-    .then(response => {
-      console.log('User created:', response.data);
-      // Handle success (e.g., navigate to login or dashboard)
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Dashboard' }],
-      });
-    })
-    .catch(error => {
-      console.error('Error when signing up:', error);
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
-      } else if (error.request) {
-        console.error('Request:', error.request);
-      } else {
-        console.error('Error message:', error.message);
-      }
-    });
-    
-  };
-
-  return (
+    return (
     <View style={styles.container}>
       <Text>Sign Up</Text>
       <TextInput

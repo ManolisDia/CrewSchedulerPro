@@ -14,7 +14,6 @@ public class CrewMemberServiceImpl implements CrewMemberService {
 
     @Override
     public CrewMember saveCrewMember(CrewMember crewMember) {
-        // Consider encoding password here if not already handled
         return crewMemberRepository.save(crewMember);
     }
 
@@ -40,7 +39,6 @@ public class CrewMemberServiceImpl implements CrewMemberService {
 
     @Override
     public CrewMember updateCrewMember(CrewMember crewMember) {
-        // Ensure proper handling of password changes, possibly re-encode password
         return crewMemberRepository.save(crewMember);
     }
 }

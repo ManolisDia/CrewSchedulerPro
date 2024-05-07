@@ -12,7 +12,6 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
     List<Shift> findByDate(String date);
     List<Shift> findByCrewMembers_Id(Long crewMemberId);
 
-    // New method to find shifts with incomplete crew
     @Query("SELECT s FROM Shift s WHERE s.requiredCrewMembers > (SELECT COUNT(c) FROM s.crewMembers c)")
     List<Shift> findShiftsWithIncompleteCrew();
 }

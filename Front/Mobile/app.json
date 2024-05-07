@@ -28,6 +28,9 @@
     },
     "extra": {
       "BASE_URL": "http://192.168.0.25:8080/api"
+    },
+    "packagerOpts": {
+      "host": "192.168.0.25"
     }
   }
 }

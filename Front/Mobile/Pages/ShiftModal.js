@@ -23,7 +23,6 @@ const ShiftModal = ({ shift, visible, closeModal }) => {
           <Text>Overtime Hours: {shift.overtimeHours || 'No overtime hours'}</Text>
           <Text>Required Crew Members: {shift.required_crew_members || 'No required crew members'}</Text>
           
-          {/* Display the list of crew members */}
           <Text style={styles.crewMembersTitle}>Crew Members:</Text>
           {shift.crewMembers && shift.crewMembers.length > 0 ? (
             shift.crewMembers.map((crewMember, index) => (

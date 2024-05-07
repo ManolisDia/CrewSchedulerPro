@@ -19,11 +19,25 @@ function CreationCard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!date) {
-      alert("Please enter a date.");
+  
+    // Check if any required field is empty
+    if (!address || !postcode || !bookingCompany || !siteContact || !siteContactNumber || !date || !startTime || !endTime || !required_crew_members) {
+      let missingFields = [];
+  
+      if (!address) missingFields.push("Address");
+      if (!postcode) missingFields.push("Postcode");
+      if (!bookingCompany) missingFields.push("Booking Company");
+      if (!siteContact) missingFields.push("Site Contact");
+      if (!siteContactNumber) missingFields.push("Site Contact Number");
+      if (!date) missingFields.push("Date");
+      if (!startTime) missingFields.push("Start Time");
+      if (!endTime) missingFields.push("End Time");
+      if (!required_crew_members) missingFields.push("Required Crew Members");
+  
+      alert(`The following fields are not filled out: ${missingFields.join(", ")}. Please complete the form before submitting!`);
       return;
     }
-
+  
     const shiftData = {
       address: address,
       postcode: postcode,
@@ -42,7 +56,6 @@ function CreationCard() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/shifts`, shiftData);
       console.log('Shift created:', response.data);
-      // Reset form fields after successful submission
       setAddress('');
       setPostcode('');
       setBookingCompany('');

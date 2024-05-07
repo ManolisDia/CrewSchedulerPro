@@ -47,8 +47,7 @@ public class Shift {
 
     @Column(nullable = false)
     @JsonProperty("required_crew_members")
-    private Integer requiredCrewMembers;  // Add this new column
-
+    private Integer requiredCrewMembers; 
     @ManyToMany
     @JoinTable(
         name = "shift_crew",
@@ -181,6 +180,13 @@ public class Shift {
     public void setRequiredCrewMembers(Integer requiredCrewMembers) {
         this.requiredCrewMembers = requiredCrewMembers;
     }
+
+    public Integer getAdditionalCrewNeeded() {
+        int assignedCrew = crewMembers != null ? crewMembers.size() : 0;
+        return requiredCrewMembers - assignedCrew;
+    }
+    
+
 
     
 

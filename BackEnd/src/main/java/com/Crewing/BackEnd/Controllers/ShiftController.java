@@ -130,7 +130,6 @@ public ResponseEntity<List<Shift>> getIncompleteShifts() {
 
     @PostMapping("/addCrew/{shiftId}/{crewMemberId}")
     public ResponseEntity<?> addCrewMemberToShift(@PathVariable Long shiftId, @PathVariable Long crewMemberId) {
-        logger.info("LOOK HERE");
         logger.info("Attempting to add crew member with ID {} to shift with ID {}", crewMemberId, shiftId);
         try {
             // Attempt to add the crew member to the shift

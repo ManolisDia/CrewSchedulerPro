@@ -73,7 +73,7 @@ const ShiftViewCard = () => {
             <p className="ModalText">End Time: {selectedShift.endTime}</p>
             <p className="ModalText">Notes: {selectedShift.notes}</p>
             <p className="ModalText">Overtime Hours: {selectedShift.overtimeHours}</p>
-            <p className="ModalText">Required Crew Members: {selectedShift.requiredCrewMembers}</p>
+            <p className="ModalText">Required Crew Members: {selectedShift.required_crew_members}</p>
             <p className="ModalText">Crew Members: {selectedShift.crewMembers.map(member => member.name).join(', ')}</p>
             <button className="ModalButton" onClick={closeModal}>Close</button>
           </>

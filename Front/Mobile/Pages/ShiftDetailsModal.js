@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     detailText: {
-        marginBottom: 10,  // Increase bottom margin for better readability
-        fontSize: 16,  // Slightly smaller font size for details
+        marginBottom: 10,  
+        fontSize: 16,
     }
 });
 

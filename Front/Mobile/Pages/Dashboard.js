@@ -38,12 +38,11 @@ const Dashboard = ({ navigation }) => {
                         overtimeHours: shift.overtimeHours,
                         required_crew_members: shift.required_crew_members,
                         crewMembers: shift.crewMembers,
-                        startDateTime: moment(`${shift.date} ${shift.startTime}`, 'YYYY-MM-DD HH:mm') // Combine date and start time
+                        startDateTime: moment(`${shift.date} ${shift.startTime}`, 'YYYY-MM-DD HH:mm') 
                     }))
-                    .filter(shift => shift.startDateTime.isAfter(now)) // Filter to only include future shifts
-                    .sort((a, b) => a.startDateTime.diff(b.startDateTime)) // Sort by the nearest future date
-                    .slice(0, 3); // Limit to the next three shifts
-
+                    .filter(shift => shift.startDateTime.isAfter(now)) 
+                    .sort((a, b) => a.startDateTime.diff(b.startDateTime))
+                    .slice(0, 3); 
 
                 const formattedIncompleteShifts = incompleteData.data
                 .filter(shift => !shift.crewMembers.some(crewMember => crewMember.id === userInfo.id))
@@ -78,7 +77,7 @@ const Dashboard = ({ navigation }) => {
     const handleRejectShift = (shiftId) => {
         const updatedShifts = incompleteShifts.filter(shift => shift.id !== shiftId);
         setIncompleteShifts(updatedShifts);
-        setSelectedShift(null); // Optionally reset the selected shift
+        setSelectedShift(null); 
     };
     
     
@@ -204,8 +203,8 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     offersFLView: {
-        minHeight: 80, // Increased height
-        width: 300, // Fixed width for each item in the horizontal list
+        minHeight: 80, 
+        width: 300, 
         marginHorizontal: 5,
         backgroundColor: '#e1f5fe',
         borderRadius: 10,

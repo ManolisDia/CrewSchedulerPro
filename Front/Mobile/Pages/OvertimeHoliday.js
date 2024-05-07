@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Platform, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import RNPickerSelect from 'react-native-picker-select'; // Import the custom picker
 import CustomPicker from './CustomPicker'; // Adjust the path as necessary
-
 import axios from 'axios';
 import { BASE_URL } from '@env';
-import { useAuth } from '../auth-context'; // Import the authentication context to access user info
+import { useAuth } from '../auth-context'; // Import the authentication context
 
 const OvertimeHoliday = () => {
   const [shifts, setShifts] = useState([]);
@@ -16,12 +14,10 @@ const OvertimeHoliday = () => {
   const [holidayEnd, setHolidayEnd] = useState(new Date());
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
-  const { userInfo } = useAuth(); // Assuming userInfo contains the logged in user's ID and other details
+  const { userInfo } = useAuth();
   const [selectedShiftLabel, setSelectedShiftLabel] = useState('');
 
-
   useEffect(() => {
-    // Use userInfo.id directly in the API call
     if (userInfo && userInfo.id) {
       axios.get(`${BASE_URL}/shifts/crew/${userInfo.id}`)
         .then(response => {
@@ -53,10 +49,20 @@ const OvertimeHoliday = () => {
         crewMemberId: userInfo.id,
         overtimeHours: parseInt(overtimeHours, 10)
       })
-      .then(response => alert('Overtime request submitted successfully'))
+      .then(response => {
+        alert('Overtime request submitted successfully');
+        setShifts(prevShifts => prevShifts.filter(shift => shift.id !== selectedShift));
+        setSelectedShift(null);
+        setSelectedShiftLabel('');
+      })
       .catch(error => alert('Error submitting overtime request'));
     }
   };
+
+
+  
+  
+  
 
   return (
     <ScrollView style={styles.container}>
@@ -74,7 +80,6 @@ const OvertimeHoliday = () => {
             }}
           />
         )}
-        {/* Display the selected start date */}
         <Text style={styles.dateText}>
           Start Date: {holidayStart.toLocaleDateString()}
         </Text>
@@ -152,22 +157,22 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: 'black', // Changed to black
+    borderColor: 'black',
     borderRadius: 4,
-    color: 'black', // Already set to black
-    paddingRight: 30, // to ensure the dropdown icon is visible
-    backgroundColor: 'white' // Added for better contrast with black border
+    color: 'black', 
+    paddingRight: 30, 
+    backgroundColor: 'white' 
   },
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 0.5,
-    borderColor: 'black', // Changed to black
+    borderColor: 'black', 
     borderRadius: 8,
-    color: 'black', // Already set to black
-    paddingRight: 30, // to ensure the dropdown icon is visible
-    backgroundColor: 'white' // Added for better contrast with black border
+    color: 'black', 
+    paddingRight: 30, 
+    backgroundColor: 'white' 
   },
 });
 

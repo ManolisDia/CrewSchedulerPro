@@ -4,7 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { BASE_URL } from '@env';
 import { useAuth } from '../auth-context';
-import ShiftModal from './ShiftModal'; // Import the ShiftModal component
+import ShiftModal from './ShiftModal'; 
 
 const CustomCalendar = () => {
   const [shifts, setShifts] = useState([]);
@@ -65,10 +65,10 @@ const CustomCalendar = () => {
       <TouchableOpacity
         key={index}
         onPress={() => {
-          console.log('Shift pressed:', shift); // Add this line for debugging
+          console.log('Shift pressed:', shift); 
           setSelectedShift(shift);
         }}
-        style={styles.shiftContainer} // Add a style for the TouchableOpacity
+        style={styles.shiftContainer} 
       >
         <View style={styles.shift}>
           <Text style={styles.shiftDetails}>Location: {shift.address}</Text>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f7f7f7', // Light grey background
+    backgroundColor: '#f7f7f7',
   },
   header: {
     flexDirection: 'row',
@@ -122,49 +122,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
     padding: 10,
-    backgroundColor: '#4a90e2', // Blue background for the header
+    backgroundColor: '#4a90e2', 
     borderRadius: 6,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff', // White text for better visibility
+    color: '#ffffff', 
   },
   arrow: {
     fontSize: 24,
-    color: '#ffffff', // White arrows
+    color: '#ffffff', 
   },
   calendar: {
     flex: 1,
   },
   day: {
-    flexDirection: 'row', // Align day and shifts side by side
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    backgroundColor: '#ffffff', // White background for each day
+    backgroundColor: '#ffffff',
     borderRadius: 6,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#dddddd', // Light grey border for separation
+    borderColor: '#dddddd',
   },
   dayLabel: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#333333', // Dark grey for text
-    marginRight: 10, // Add margin to separate date from shifts
+    color: '#333333',
+    marginRight: 10, 
   },
   shift: {
-    backgroundColor: '#e1f5fe', // Light blue for shift details
-    borderRadius: 8,
+    backgroundColor: '#e1f5fe', 
     padding: 8,
-    marginLeft: 5, // Space between multiple shifts
-    minWidth: 200, // Minimum width for each shift box
+    marginLeft: 5,
+    minWidth: 200, 
     maxWidth: 400, 
-    margin: 5, // Give some space around each shift box
+    margin: 5, 
   },
   shiftDetails: {
     fontSize: 16,
-    color: '#333333', // Consistent text color
+    color: '#333333', 
   },
 });
 

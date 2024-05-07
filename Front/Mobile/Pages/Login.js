@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { BASE_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
@@ -12,39 +12,50 @@ const Login = () => {
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    console.log('Login button pressed');
-    try {
-      console.log('Base URL:', BASE_URL);
-        const response = await axios.post(`${BASE_URL}/auth/login`, {
-            username,
-            password,
-        });
-        console.log('Login successful:', response.data);
-        const user = response.data.user; // Ensure this is defined before logging it
-        if (user) {
-            console.log('User object:', user);
-            login(user); // Call the login function from the auth context with the user object
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Dashboard' }],
-            });
-        } else {
-            console.error('No user data returned');
-        }
-    } catch (error) {
-        console.error('Error when logging in:', error);
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
-        } else if (error.request) {
-            console.error('Request:', error.request);
-        } else {
-            console.error('Error message:', error.message);
-        }
-    }
-};
-
+      console.log('Login button pressed');
+      try {
+          console.log('Base URL:', BASE_URL);
+          const response = await axios.post(`${BASE_URL}/auth/login`, {
+              username,
+              password,
+          });
+          console.log('Login successful:', response.data);
+          const user = response.data.user;
+          if (user) {
+              console.log('User object:', user);
+              login(user);
+              navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Dashboard' }],
+              });
+          } else {
+              console.error('No user data returned');
+              Alert.alert(
+                  'Invalid Credentials',
+                  'Please enter valid username and password.',
+                  [{ text: 'OK' }],
+                  { cancelable: false }
+              );
+          }
+      } catch (error) {
+          console.error('Error when logging in:', error);
+          if (error.response) {
+              console.error('Response data:', error.response.data);
+              console.error('Response status:', error.response.status);
+              console.error('Response headers:', error.response.headers);
+              Alert.alert(
+                  'Invalid Credentials',
+                  'Please enter valid username and password.',
+                  [{ text: 'OK' }],
+                  { cancelable: false }
+              );
+          } else if (error.request) {
+              console.error('Request:', error.request);
+          } else {
+              console.error('Error message:', error.message);
+          }
+      }
+  };
 
   return (
     <View style={styles.container}>

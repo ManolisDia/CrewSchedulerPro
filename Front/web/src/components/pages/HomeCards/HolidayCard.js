@@ -8,7 +8,11 @@ function HolidayCard() {
     const [overtimeRequests, setOvertimeRequests] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
 
-    // Function to fetch holiday requests
+    useEffect(() => {
+        fetchHolidayRequests();
+        fetchOvertimeRequests();
+    }, []);
+
     const fetchHolidayRequests = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/holidays`);
@@ -18,7 +22,6 @@ function HolidayCard() {
         }
     };
 
-    // Function to fetch overtime requests
     const fetchOvertimeRequests = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/overtime`);
@@ -27,11 +30,6 @@ function HolidayCard() {
             console.error('Failed to fetch overtime requests:', error);
         }
     };
-
-    useEffect(() => {
-        fetchHolidayRequests();
-        fetchOvertimeRequests();
-    }, []);
 
     const handleRequestClick = (request) => {
         setSelectedRequest(request);
@@ -44,20 +42,24 @@ function HolidayCard() {
     const handleAccept = async (request) => {
         console.log("Accepting request:", request);
         try {
-            // Append the overtime hours as a query parameter in the request URL
             const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/shifts/addOvertime/${request.shift.id}?overtimeHours=${request.overtimeHours}`);
             console.log('Overtime added to shift:', response.data);
-            fetchOvertimeRequests();  // Refresh the overtime requests after successful update
+            setOvertimeRequests(prevRequests => prevRequests.filter(r => r.id !== request.id));
         } catch (error) {
             console.error('Error adding overtime:', error);
             alert('Failed to add overtime: ' + (error.response ? error.response.data.message : error.message));
         }
     };
-    
-
-    const handleReject = (request) => {
+    const handleReject = async (request) => {
         console.log("Rejecting request:", request);
-        // Implement reject logic
+        try {
+            
+            await axios.delete(`${process.env.REACT_APP_BASE_URL}/overtime/crew/${request.crewMember.id}/shift/${request.shift.id}`);
+            setOvertimeRequests(prevRequests => prevRequests.filter(r => r.id !== request.id));
+        } catch (error) {
+            console.error('Error rejecting overtime:', error);
+            alert('Failed to reject overtime: ' + (error.response ? error.response.data.message : error.message));
+        }
     };
 
     return (
@@ -65,30 +67,22 @@ function HolidayCard() {
           <h1>Holiday and Overtime Requests</h1>
           <div className='requestList'>
             <h2>Holiday Requests</h2>
-            {holidayRequests.length > 0 ? (
-              holidayRequests.map(request => (
-                <div key={request.id} className='requestItem' onClick={() => handleRequestClick(request)}>
-                  <p>Name: {request.name}</p>
-                  <p>Type: {request.type}</p>
-                  <p>Date: {request.date}</p>
-                </div>
-              ))
-            ) : (
-              <p>No holiday requests found.</p>
-            )}
+            {holidayRequests.map(request => (
+              <div key={request.id} className='requestItem' onClick={() => handleRequestClick(request)}>
+                <p>Name: {request.name}</p>
+                <p>Type: {request.type}</p>
+                <p>Date: {request.date}</p>
+              </div>
+            ))}
             <h2>Overtime Requests</h2>
-            {overtimeRequests.length > 0 ? (
-              overtimeRequests.map(request => (
-                <div key={request.id} className='requestItem' onClick={() => handleRequestClick(request)}>
-                  <p>Name: {request.crewMember.name}</p>
-                  <p>Shift: {request.shift.address}</p>
-                  <p>Overtime Hours: {request.overtimeHours}</p>
-                  <p>Date: {request.shift.date}</p>
-                </div>
-              ))
-            ) : (
-              <p>No overtime requests found.</p>
-            )}
+            {overtimeRequests.map(request => (
+              <div key={request.id} className='requestItem' onClick={() => handleRequestClick(request)}>
+                <p>Name: {request.crewMember.name}</p>
+                <p>Shift: {request.shift.address}</p>
+                <p>Overtime Hours: {request.overtimeHours}</p>
+                <p>Date: {request.shift.date}</p>
+              </div>
+            ))}
           </div>
           {selectedRequest && (
             <OvertimeModal
@@ -99,7 +93,7 @@ function HolidayCard() {
             />
           )}
         </div>
-      );
-    }
-    
-    export default HolidayCard;
+    );
+}
+
+export default HolidayCard;

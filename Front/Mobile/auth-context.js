@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('userInfo');
-      setUserInfo(null);
       setIsAuthenticated(false);
+      setUserInfo(null);
     } catch (error) {
       console.error('Failed to clear user info:', error);
     }

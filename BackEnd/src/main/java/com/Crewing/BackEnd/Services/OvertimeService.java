@@ -8,6 +8,7 @@ public interface OvertimeService {
     Overtime getOvertimeById(Long id);
     List<Overtime> getAllOvertimes();
     void deleteOvertime(Long id);
+    boolean deleteOvertimeByCrewMemberAndShift(Long crewMemberId, Long shiftId); // New method
     List<Overtime> getOvertimesByShiftId(Long shiftId);
     List<Overtime> getOvertimesByCrewMemberId(Long crewMemberId);
 }
